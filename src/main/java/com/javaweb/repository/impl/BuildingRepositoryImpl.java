@@ -6,9 +6,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
+import com.fasterxml.jackson.core.sym.Name;
 import com.javaweb.database.MySQLConnection;
 import com.javaweb.entity.BuildingEntity;
 import com.javaweb.repository.BuildingRepository;
@@ -17,12 +20,20 @@ import com.javaweb.repository.BuildingRepository;
 public class BuildingRepositoryImpl implements BuildingRepository{
 
 	@Override
-	public List<BuildingEntity> findAll(String name) {
-		String sqlString = "SELECT * FROM building WHERE name like '%" + name + "%'";
+	public List<BuildingEntity> findAll(Map<String, String> requestParams, Optional<List<String>> rentType) {
+		StringBuilder sqlString = new StringBuilder("SELECT * FROM building WHERE 1 = 1 ");
+		
+		if (requestParams.containsKey("name")) {
+			String value = requestParams.get("name");
+			if (value != null && value != "") {
+				sqlString.append("AND name LIKE '%" + value + "%' ");
+			}
+		}
+		
 		List<BuildingEntity> result = new ArrayList<>();
 		try (Connection connection = MySQLConnection.connect();
 				Statement stmt = connection.createStatement();
-				ResultSet rs = stmt.executeQuery(sqlString);) {
+				ResultSet rs = stmt.executeQuery(sqlString.toString());) {
 			while(rs.next()) {
 				BuildingEntity building = new BuildingEntity();
 				building.setName(rs.getString("name"));
