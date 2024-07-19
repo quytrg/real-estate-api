@@ -2,7 +2,6 @@ package com.javaweb.controller;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -27,7 +26,7 @@ public class BuidingController {
 		if (requestParams.containsKey("rentType")) {
 			requestParams.remove("rentType");
 		}
-		List<BuildingDTO> result = buildingService.findAll(requestParams, Optional.ofNullable(rentType));
+		List<BuildingDTO> result = buildingService.findAll(requestParams, rentType);
 		return result;
 	}
 }
