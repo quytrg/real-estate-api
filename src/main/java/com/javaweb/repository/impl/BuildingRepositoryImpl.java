@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 
@@ -21,7 +22,7 @@ public class BuildingRepositoryImpl implements BuildingRepository{
 
 	public static void joinTable(Map<String, String> requestParams, List<String> rentType, StringBuilder sqlString) {
 		String staffId = requestParams.get("staffId");
-		if (StringUtil.isRequestParamValid(staffId)) {
+		if (StringUtil.isValidRequestParam(staffId)) {
 			sqlString.append(" INNER JOIN assignmentbuilding ab ON b.id = ab.buildingid ");
 		}
 		
@@ -29,19 +30,13 @@ public class BuildingRepositoryImpl implements BuildingRepository{
 			sqlString.append(" INNER JOIN buildingrenttype br ON b.id = br.buildingid ");
 			sqlString.append(" INNER JOIN renttype rt ON br.renttypeid = rt.id ");
 		}
-		
-		String rentAreaFrom = requestParams.get("rentAreaFrom");
-		String rentAreaTo = requestParams.get("rentAreaTo");
-		if (StringUtil.isRequestParamValid(rentAreaFrom) || StringUtil.isRequestParamValid(rentAreaTo)) {
-			sqlString.append(" INNER JOIN rentarea ra ON b.id = ra.buildingid ");
-		}
 	}
 	
 	public static void normalQuery(Map<String, String> requestParams, List<String> rentType, StringBuilder whereString) {
 		for (Map.Entry<String, String> item: requestParams.entrySet()) {
 			// except "staffId", "rentType", "rentArea...", "rentPrice..."
 			if (!item.getKey().equals("staffId") && !item.getKey().startsWith("rent")) {
-				if (StringUtil.isRequestParamValid(item.getValue())) {
+				if (StringUtil.isValidRequestParam(item.getValue())) {
 					if (NumberUtil.isInteger(item.getValue())) {
 						whereString.append(" AND b." + item.getKey().toLowerCase() + " = " + item.getValue() + " ");
 					}
@@ -56,34 +51,44 @@ public class BuildingRepositoryImpl implements BuildingRepository{
 	
 	public static void specialQuery(Map<String, String> requestParams, List<String> rentType, StringBuilder whereString) {
 		String staffId = requestParams.get("staffId");
-		if (StringUtil.isRequestParamValid(staffId)) {
+		if (StringUtil.isValidRequestParam(staffId)) {
 			whereString.append(" AND ab.staffid = " + staffId + " ");
 		}
 		
 		if (rentType != null && !rentType.stream().allMatch(n -> n.trim().isEmpty())) {
-			whereString.append(" AND rt.code IN ( ");
-			for (String code : rentType) {
-				whereString.append("'" + code + "', ");
-			}
-			whereString.deleteCharAt(whereString.lastIndexOf(","));
-			whereString.append(") ");
+//			c1
+//			whereString.append(" AND rt.code IN ( ");
+//			for (String code : rentType) {
+//				whereString.append("'" + code + "', ");
+//			}
+//			whereString.deleteCharAt(whereString.lastIndexOf(","));
+//			whereString.append(") ");
+//			c2
+			whereString.append(" AND rt.code IN ( "
+					+ rentType.stream().map(item -> "'" + item + "'").collect(Collectors.joining(", ")) 
+					+ " ) ");
 		}
 		
 		String rentAreaFrom = requestParams.get("rentAreaFrom");
 		String rentAreaTo = requestParams.get("rentAreaTo");
-		if (StringUtil.isRequestParamValid(rentAreaFrom)) {
-			whereString.append(" AND ra.value >= " + rentAreaFrom + " ");
+		if (StringUtil.isValidRequestParam(rentAreaFrom) || StringUtil.isValidRequestParam(rentAreaTo)) {
+			whereString.append(" AND EXISTS ( SELECT 1 FROM rentarea ra WHERE b.id = ra.buildingid ");
+			if (StringUtil.isValidRequestParam(rentAreaFrom)) {
+				whereString.append(" AND ra.value >= " + rentAreaFrom + " ");
+			}
+			if (StringUtil.isValidRequestParam(rentAreaTo)) {
+				whereString.append(" AND ra.value <= " + rentAreaTo + " ");
+			}
+			whereString.append(" ) ");
 		}
-		if (StringUtil.isRequestParamValid(rentAreaTo)) {
-			whereString.append(" AND ra.value <= " + rentAreaTo + " ");
-		}
+		
 		
 		String rentPriceFrom = requestParams.get("rentPriceFrom");
 		String rentPriceTo = requestParams.get("rentPriceTo");
-		if (StringUtil.isRequestParamValid(rentPriceFrom)) {
+		if (StringUtil.isValidRequestParam(rentPriceFrom)) {
 			whereString.append(" AND b.rentprice >= " + rentPriceFrom + " ");
 		}
-		if (StringUtil.isRequestParamValid(rentPriceTo)) {
+		if (StringUtil.isValidRequestParam(rentPriceTo)) {
 			whereString.append(" AND b.rentprice <= " + rentPriceTo + " ");
 		}
 	}
