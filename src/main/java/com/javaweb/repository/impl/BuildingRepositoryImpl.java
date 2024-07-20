@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 
@@ -55,12 +56,17 @@ public class BuildingRepositoryImpl implements BuildingRepository{
 		}
 		
 		if (rentType != null && !rentType.stream().allMatch(n -> n.trim().isEmpty())) {
-			whereString.append(" AND rt.code IN ( ");
-			for (String code : rentType) {
-				whereString.append("'" + code + "', ");
-			}
-			whereString.deleteCharAt(whereString.lastIndexOf(","));
-			whereString.append(") ");
+//			c1
+//			whereString.append(" AND rt.code IN ( ");
+//			for (String code : rentType) {
+//				whereString.append("'" + code + "', ");
+//			}
+//			whereString.deleteCharAt(whereString.lastIndexOf(","));
+//			whereString.append(") ");
+//			c2
+			whereString.append(" AND rt.code IN ( "
+					+ rentType.stream().map(item -> "'" + item + "'").collect(Collectors.joining(", ")) 
+					+ " ) ");
 		}
 		
 		String rentAreaFrom = requestParams.get("rentAreaFrom");
