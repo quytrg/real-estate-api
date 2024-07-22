@@ -15,7 +15,7 @@ import com.javaweb.repository.DistrictRepository;
 import com.javaweb.repository.RentAreaRepository;
 
 @Component
-public class BuildingConverter {
+public class BuildingDTOConverter {
 	
 	@Autowired
 	private DistrictRepository districtRepository;
