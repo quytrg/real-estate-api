@@ -21,7 +21,7 @@ public class BuidingController {
 	private BuildingService buildingService;
 	
 	@GetMapping
-	public List<BuildingDTO> getBuidings(@RequestParam Map<String, String> requestParams,
+	public List<BuildingDTO> getBuidings(@RequestParam Map<String, Object> requestParams,
 										@RequestParam(value = "rentType", required = false) List<String> rentType) {
 		if (requestParams.containsKey("rentType")) {
 			requestParams.remove("rentType");
