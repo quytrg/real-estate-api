@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
@@ -94,6 +95,7 @@ public class BuildingRepositoryImpl implements BuildingRepository{
 	}
 	
 	@Override
+	@Transactional
 	public List<BuildingEntity> findAll(BuildingSearchBuilder buildingSearchBuilder) {
 		// JPQL
 		StringBuilder sqlString = new StringBuilder("SELECT DISTINCT b FROM BuildingEntity b ");
