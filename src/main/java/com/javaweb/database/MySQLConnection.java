@@ -6,8 +6,8 @@ import java.sql.SQLException;
 
 import com.javaweb.config.DatabaseConfig;
 
-
 public class MySQLConnection {
+	
     public static Connection connect() throws SQLException {
 
         try {
