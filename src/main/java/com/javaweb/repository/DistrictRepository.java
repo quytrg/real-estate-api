@@ -1,7 +1,10 @@
 package com.javaweb.repository;
 
-import com.javaweb.entity.DistrictEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface DistrictRepository {
-	public DistrictEntity findOneById(Integer id);
+import com.javaweb.entity.DistrictEntity;
+import com.javaweb.repository.custom.DistrictRepositoryCustom;
+
+public interface DistrictRepository extends JpaRepository<DistrictEntity, Integer>, DistrictRepositoryCustom{
+	
 }

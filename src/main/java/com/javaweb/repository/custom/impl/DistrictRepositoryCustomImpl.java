@@ -1,4 +1,4 @@
-package com.javaweb.repository.impl;
+package com.javaweb.repository.custom.impl;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -9,10 +9,10 @@ import org.springframework.stereotype.Repository;
 
 import com.javaweb.database.MySQLConnection;
 import com.javaweb.entity.DistrictEntity;
-import com.javaweb.repository.DistrictRepository;
+import com.javaweb.repository.custom.DistrictRepositoryCustom;
 
 @Repository
-public class DistrictRepositoryImpl implements DistrictRepository{
+public class DistrictRepositoryCustomImpl implements DistrictRepositoryCustom{
 
 	@Override
 	public DistrictEntity findOneById(Integer id) {
