@@ -1,4 +1,4 @@
-package com.javaweb.repository.impl;
+package com.javaweb.repository.custom.impl;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -11,10 +11,10 @@ import org.springframework.stereotype.Repository;
 
 import com.javaweb.database.MySQLConnection;
 import com.javaweb.entity.RentAreaEntity;
-import com.javaweb.repository.RentAreaRepository;
+import com.javaweb.repository.custom.RentAreaRepositoryCustom;
 
 @Repository
-public class RentAreaRepositoryImpl implements RentAreaRepository{
+public class RentAreaRepositoryCustomImpl implements RentAreaRepositoryCustom{
 
 	@Override
 	public List<RentAreaEntity> getValueByBuildingId(Integer id) {

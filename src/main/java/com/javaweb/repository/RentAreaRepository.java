@@ -1,9 +1,10 @@
 package com.javaweb.repository;
 
-import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.javaweb.entity.RentAreaEntity;
+import com.javaweb.repository.custom.RentAreaRepositoryCustom;
 
-public interface RentAreaRepository {
-	public List<RentAreaEntity> getValueByBuildingId(Integer id);
+public interface RentAreaRepository extends JpaRepository<RentAreaEntity, Integer>, RentAreaRepositoryCustom{
+	
 }
