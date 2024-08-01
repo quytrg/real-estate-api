@@ -1,4 +1,4 @@
-package com.javaweb.repository.impl;
+package com.javaweb.repository.custom.impl;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -13,11 +13,11 @@ import org.springframework.stereotype.Repository;
 
 import com.javaweb.builder.BuildingSearchBuilder;
 import com.javaweb.entity.BuildingEntity;
-import com.javaweb.repository.BuildingRepository;
+import com.javaweb.repository.custom.BuildingRepositoryCustom;
 
 @Repository
 @Primary
-public class BuildingRepositoryImpl implements BuildingRepository{
+public class BuildingRepositoryCustomImpl implements BuildingRepositoryCustom{
 	
 	@PersistenceContext
 	private EntityManager entityManager;

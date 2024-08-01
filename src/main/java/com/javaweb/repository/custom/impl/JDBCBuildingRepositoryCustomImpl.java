@@ -1,4 +1,4 @@
-package com.javaweb.repository.impl;
+package com.javaweb.repository.custom.impl;
 
 import java.lang.reflect.Field;
 import java.sql.Connection;
@@ -14,10 +14,10 @@ import org.springframework.stereotype.Repository;
 import com.javaweb.builder.BuildingSearchBuilder;
 import com.javaweb.database.MySQLConnection;
 import com.javaweb.entity.BuildingEntity;
-import com.javaweb.repository.BuildingRepository;
+import com.javaweb.repository.custom.BuildingRepositoryCustom;
 
 @Repository
-public class JDBCBuildingRepositoryImpl implements BuildingRepository{
+public class JDBCBuildingRepositoryCustomImpl implements BuildingRepositoryCustom{
 	
 	public static void joinTable(BuildingSearchBuilder buildingSearchBuilder, StringBuilder sqlString) {
 		Integer staffId = buildingSearchBuilder.getStaffId();
