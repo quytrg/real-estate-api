@@ -35,11 +35,12 @@ public class BuildingRepositoryCustomImpl implements BuildingRepositoryCustom{
 	
 	public static void normalQuery(BuildingSearchBuilder buildingSearchBuilder, StringBuilder whereString) {
 		try {
-			Field[] fields = BuildingSearchBuilder.class.getFields();
+			Field[] fields = BuildingSearchBuilder.class.getDeclaredFields();
 			for (Field item : fields) {
 				String key = item.getName();
 				// except "staffId", "rentType", "rentArea...", "rentPrice..."
 				if (!key.equals("staffId") && !key.startsWith("rent")) {
+					item.setAccessible(true);
 					Object value = item.get(buildingSearchBuilder);
 					if (value != null) {
 						if (item.getType().equals(Integer.class) || item.getType().equals(Double.class)) {
